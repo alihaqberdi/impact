@@ -45,7 +45,8 @@ class DetailRoom(APIView):
 
 class BookView(APIView):
     def post(self, request, pk):
-        now = datetime.now()
+        samarqand_vaqt = pytz.timezone('Asia/Samarkand')
+        now = datetime.now(samarqand_vaqt)
         d = request.data
         room_obj = get_object_or_404(Room, pk=pk)
         res_name = d.get('resident')['name']
@@ -62,7 +63,7 @@ class BookView(APIView):
                 "error": "Vaqtni to'g'ri kiriting"
             })
 
-        if start_time < now:
+        if str(start_time) < str(now):
             return Response({
                 "error": "Kelgusi vaqtni  kiriting"
             })

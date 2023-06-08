@@ -21,7 +21,7 @@ class DateTimeSerializer(serializers.Serializer):
         current_date = datetime.now()
 
         # Check if the date is in the past
-        if str(value) < str(current_date):
+        if str(value) < str(current_date.date()):
             raise serializers.ValidationError("Kelgusi vaqtni kiriting")
 
         # Check if the date is beyond 2030
