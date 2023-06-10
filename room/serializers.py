@@ -1,9 +1,9 @@
+from rest_framework.exceptions import ValidationError
 from rest_framework import serializers
 from room.models import Room, Booking
-from datetime import datetime, date
-
-
-
+from datetime import datetime, timedelta
+import room.funcsion
+import pytz
 
 
 class RoomSerializers(serializers.ModelSerializer):
@@ -12,21 +12,44 @@ class RoomSerializers(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ResidentSerializer(serializers.Serializer):
+    name = serializers.CharField()
+
+
+class BookingSerializer(serializers.Serializer):
+    resident = ResidentSerializer()
+    start = serializers.DateTimeField(input_formats=['%Y-%m-%d %H:%M:%S'])
+    end = serializers.DateTimeField(input_formats=['%Y-%m-%d %H:%M:%S'])
+
+    def validate(self, attrs):
+
+        start_date = attrs.get('start')
+        end_date = attrs.get('end')
+        now = room.funcsion.time_converter(datetime.now() + timedelta(hours=5))
+
+        if start_date < now:
+            raise ValidationError("Kelgusi vaqtni  kiriting")
+
+        if start_date > end_date:
+            raise ValidationError("Vaqtni to'g'ri kiriting")
+
+        if end_date.date() > start_date.date():
+            raise ValidationError("Vaqtni to'g'ri kiriting")
+
+        return attrs
+
+
 class DateTimeSerializer(serializers.Serializer):
-    date = serializers.DateField(format="%d.%m.%Y", input_formats=["%d.%m.%Y"])
+    date = serializers.DateField(format='%Y-%m-%d', input_formats=['%Y-%m-%d'])
 
     def validate(self, attrs):
         value = attrs['date']
-        # Perform validation logic here
         current_date = datetime.now()
 
-        # Check if the date is in the past
-        if str(value) < str(current_date.date()):
+        if value < current_date.date():
             raise serializers.ValidationError("Kelgusi vaqtni kiriting")
 
-        # Check if the date is beyond 2030
-        if value.year > 2030:
-            raise serializers.ValidationError("2030 yilgacha bo'lgan sana kiriting")
+        if value.year > 2023:
+            raise serializers.ValidationError("2024 yilgacha bo'lgan sana kiriting")
 
-        # Return the validated value
-        return value
+        return attrs

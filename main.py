@@ -1,16 +1,19 @@
-# This is a sample Python script.
+# from datetime import datetime
+#
+# my_str = "2023-02-02"
+#
+# my_datetime = datetime.strptime(my_str,"%Y-%m-%d")
+# print(my_datetime)
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# from datetime import datetime
+#
+# date = datetime(2023, 6, 20)
+#
+# formatted_date = date.strftime('%Y-%m-%d')
+#
+# print(formatted_date
+#
+#
+# )
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(type('2023-06-10 14:03:00+00:00') ,'2023-06-10 17:16:16.126628+05:00')
