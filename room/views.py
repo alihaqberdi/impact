@@ -1,14 +1,13 @@
-from datetime import datetime
-from .funcsion import get_next_day
+from .funcsion import get_book_object
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from .models import Room, Booking
-from .serializers import RoomSerializers, DateTimeSerializer
-from django.db.models import Q
+from .serializers import RoomSerializers, BookingSerializer
 import pytz
+from datetime import datetime
 from .pagination import CustomPagination
 from django.contrib.postgres.search import TrigramSimilarity
 
@@ -16,18 +15,17 @@ from django.contrib.postgres.search import TrigramSimilarity
 class RoomsView(generics.ListCreateAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializers
-    pagination_class = CustomPagination
+    pagination_class = CustomPagination  # Custom pagination  /pagination.py
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['type']
 
     def get_queryset(self):
         room_obj = Room.objects.all()
         search_query = self.request.query_params.get('search')
-        print(self.request)
+
         if search_query:
             room_obj = Room.objects.annotate(
                 smilarity=TrigramSimilarity('name', search_query)).filter(smilarity__gt=0.3).order_by('-smilarity')
-
         return room_obj
 
 
@@ -45,38 +43,33 @@ class DetailRoom(APIView):
 
 class BookView(APIView):
     def post(self, request, pk):
-        samarqand_vaqt = pytz.timezone('Asia/Samarkand')
-        now = datetime.now(samarqand_vaqt)
-        d = request.data
-        room_obj = get_object_or_404(Room, pk=pk)
-        res_name = d.get('resident')['name']
-        try:
-            start_time = datetime.strptime(request.data.get('start'), '%d-%m-%Y %H:%M:%S')
-            end_time = datetime.strptime(request.data.get('end'), '%d-%m-%Y %H:%M:%S')
-        except:
+        data = request.data
+        data['room'] = pk
+        serializer = BookingSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            if Booking.objects.filter(room__id=pk, start__lt=serializer.data.get('end'),
+                                      end__gt=serializer.data.get('start')).exists():
+                return Response({
+                    "error": "uzr, siz tanlagan vaqtda xona band"
+                })
+            valid_data = serializer.validated_data
+            Booking.objects.create(
+                room=Room.objects.get(pk=pk),
+                start=valid_data.get('start'),
+                end=valid_data.get('end'),
+                resident=valid_data.get('resident').get('name'),
+
+            )
             return Response({
-                "error": "Vaqtni to'g'ri kiriting"
+                "message": "xona muvaffaqiyatli band qilindi"
             })
 
-        if start_time > end_time:
-            return Response({
-                "error": "Vaqtni to'g'ri kiriting"
-            })
-
-        if str(start_time) < str(now):
-            return Response({
-                "error": "Kelgusi vaqtni  kiriting"
-            })
-
-        if Booking.objects.filter(room__id=pk, start__lt=end_time, end__gt=start_time).exists():
-            return Response({
-                "error": "uzr, siz tanlagan vaqtda xona band"
-            })
-        Booking.objects.create(room=room_obj, resident_name=res_name, start=start_time, end=end_time)
-        return Response({
-            "message": "xona muvaffaqiyatli band qilindi"
-        })
 
 
-          
-        
+class RoomFreeTimeView2(APIView):
+    def get(self, request, room_id):
+        room_obj = get_object_or_404(Room, pk=room_id)
+        data_or_defaul = (request.GET.get('date'))
+        ans = get_book_object(room_obj, data_or_defaul)
+        return Response(ans)
+
