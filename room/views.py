@@ -71,9 +71,15 @@ class BookView(APIView):
             })
 
 
+
 class RoomAvailability(APIView):
+
+
+class RoomFreeTimeView2(APIView):
+
     def get(self, request, room_id):
         room_obj = get_object_or_404(Room, pk=room_id)
         data_or_defaul = (request.GET.get('date'))
         ans = get_book_object(room_obj, data_or_defaul)
         return Response(ans)
+
