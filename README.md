@@ -1,5 +1,5 @@
-#Yozda Birga Kod Yozamiz:  Impact Loyihasi
-#Installation
+# Yozda Birga Kod Yozamiz:  Impact Loyihasi
+# Installation
 
 
 
