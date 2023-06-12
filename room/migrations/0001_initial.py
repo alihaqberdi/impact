@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunSQL('CREATE EXTENSION pg_trgm'),
         migrations.CreateModel(
             name='Room',
             fields=[
