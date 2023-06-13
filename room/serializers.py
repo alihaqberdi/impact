@@ -39,9 +39,6 @@ class BookingSerializer(serializers.Serializer):
         if start_date > start_date + timedelta(days=30):
             raise ValidationError({"error": "xonani hozirgi vaqtdan 30 kungacha band qilish mumkin"})
 
-        if end_date < start_date + timedelta(hours=1):
-            raise ValidationError({"error": "xona 1-soatdan kam vaqtga berilmaydi"})
-
         return attrs
 
 

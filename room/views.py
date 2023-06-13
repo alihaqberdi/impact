@@ -57,7 +57,7 @@ class BookView(APIView):
                                       end__gt=serializer.data.get('start')).exists():
                 return Response({
                     "error": "uzr, siz tanlagan vaqtda xona band"
-                }, status.HTTP_400_BAD_REQUEST)
+                }, status.HTTP_410_GONE)
             valid_data = serializer.validated_data
             Booking.objects.create(
                 room=Room.objects.get(pk=pk),
