@@ -63,7 +63,7 @@ test_free_time funksiyasi booking bolmagan bugungi  kunning bo'sh vaqtini chiqar
 
 `misol hozir: 2023-06-13 11:10:30`
 #### `GET rooms/1/availability/`
-
+HTTP 200
 ```json
 {
   "start": "2023-06-13 11:10:30",
@@ -73,8 +73,7 @@ test_free_time funksiyasi booking bolmagan bugungi  kunning bo'sh vaqtini chiqar
 
 
 ### def test_with_booking(self):
-test_with_booking funksiyasi bugungi kunga 1 marta booking bo'lgan holat uchun
-bo'sh vaqtni chiqarish datasini tekshiradi ``misol hozir 2023-06-13 11:30:00``
+test_with_booking funksiyasi bugungi kunga 1 marta booking bo'lgan holat uchun bo'sh vaqtni chiqarish datasini tekshiradi ``misol hozir 2023-06-13 11:30:00``
 
 #### `POST /rooms/1/book`
 ```json
@@ -86,8 +85,9 @@ bo'sh vaqtni chiqarish datasini tekshiradi ``misol hozir 2023-06-13 11:30:00``
   "end": "2023-06-13 13:30:00"
 }
 ```
-Xona bo'sh vaqtini ko'rish:
+#### Xona bo'sh vaqtini ko'rish:
 #### `GET rooms/1/availability/`
+HTTP 200
 ```json
 [
   {
@@ -100,3 +100,65 @@ Xona bo'sh vaqtini ko'rish:
   }
 ]
 ```
+### def test_parametr_date(self):
+test_parametr_date funksiyasi bugungi kunga 2 marta booking bo'lgan holat uchun va date parametr orqali kelgan so'rov orqali bo'sh vaqtni chiqarish datasini test qiladi.``misol hozir 2023-06-13 11:30:00``
+
+#### `POST /rooms/1/book`
+```json
+{
+  "resident": {
+    "name": "Vali"
+  },
+  "start": "2023-06-13 12:30:00",
+  "end": "2023-06-13 13:30:00"
+}
+```
+#### `POST /rooms/1/book`
+```json
+{
+  "resident": {
+    "name": "Anvar"
+  },
+  "start": "2023-06-13 14:30:00",
+  "end": "2023-06-13 15:30:00"
+}
+```
+#### Xona bo'sh vaqtini ko'rish:
+#### `GET rooms/1/availability/`
+HTTP 200
+```json
+[
+  {
+    "start": "2023-06-13 11:30:00",
+    "end": "2023-06-13 12:30:00"
+  },
+  {
+    "start": "2023-06-13 13:30:00",
+    "end": "2023-06-13 14:30:00"
+  },
+  {
+    "start": "2023-06-13 15:30:00",
+    "end": "2023-06-13 23:59:59"
+  }
+]
+```
+
+### def test_error_date(self):
+test_error_date funksiyasi view validate ishlashini test qiladi ``misol hozir 2023-06-13 11:30:00``
+xato booking so'rov yuboriladi.
+#### `POST /rooms/1/book`
+```json
+{
+  "resident": {
+    "name": "Umar"
+  },
+  "start": "2023-06-13 13:30:00",
+  "end": "2023-06-13 12:30:00"
+}
+```
+HTTP 400
+```json
+{"error": "Kelgusi vaqtni kiriting"}  
+```
+
+# yuqoridagi 1 ta test clasidan namuna qolgan testlar ham shu ketmaketlikda ishlaydi
