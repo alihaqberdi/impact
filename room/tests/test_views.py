@@ -11,6 +11,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 
 class TestRoomAvailabilityView(APITestCase):
+
     def setUp(self) -> None:
         self.client = APIClient()
         self.samarqand_vaqt = datetime.now() + timedelta(hours=5)
@@ -26,8 +27,8 @@ class TestRoomAvailabilityView(APITestCase):
         url = reverse('availability', args=[self.room.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.get('end'), self.kun_oxiri)
         self.assertEqual(response.data.get('start'), self.hozirgi_vaqt)
+        self.assertEqual(response.data.get('end'), self.kun_oxiri)
 
     def test_with_booking(self):
         self.book = Booking.objects.create(room=self.room, resident='express', start=self.hozir_add_hour,
@@ -102,7 +103,6 @@ class TestBookingView(APITestCase):
             'message': 'xona muvaffaqiyatli band qilindi'
         })
 
-
     def test_band_vaqt(self):
         url = reverse('booking', args=[self.room.pk])
         booking_ali = Booking.objects.create(
@@ -121,11 +121,10 @@ class TestBookingView(APITestCase):
 
         response = self.client.post(url, data, format='json')
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_410_GONE)
         self.assertEqual(response.data['error'],
-            "uzr, siz tanlagan vaqtda xona band"
-        )
-
+                         "uzr, siz tanlagan vaqtda xona band"
+                         )
 
     def test_error_date(self):
         url = reverse('booking', args=[self.room.pk])
@@ -140,7 +139,6 @@ class TestBookingView(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['error'][0], 'Vaqtni to\'g\'ri kiriting')
-
 
         data['start'] = self.hozir_add_3hour
         data['end'] = self.hozir_add_1day
@@ -188,13 +186,12 @@ class TestRoomsView(APITestCase):
 
     def test_create_room(self):
         url = reverse('rooms')
-        data = {'name': 'New Room', 'type': 'team', 'capacity':'6'}
+        data = {'name': 'New Room', 'type': 'team', 'capacity': '6'}
         response = self.client.post(url, data)
         room = Room.objects.get(name='New Room')
         serializer = RoomSerializers(room)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data, serializer.data)
-
 
     def test_filter_rooms_by_type(self):
         url = reverse('rooms') + '?type=team'
