@@ -161,4 +161,4 @@ HTTP 400
 {"error": "Kelgusi vaqtni kiriting"}  
 ```
 
-# Yuqoridagi 1 ta test klasidan namuna. Qolgan testlar ham shu ketma-ketlikda testlangan
+# Yuqoridagi 1 ta test Class dan namuna. Qolgan testlar ham shu ketma-ketlikda testlangan
