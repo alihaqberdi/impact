@@ -39,3 +39,4 @@ typing_extensions==4.6.3
 uritemplate==4.1.1
 urllib3==2.0.3
 wcwidth==0.2.6
+gunicorn==19.7.1
