@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "impact",
-        "USER": "postgres",
-        "PASSWORD": "lopsed2211tyg",
-        "HOST": "localhost",
+        "NAME": "impact_gf0j",
+        "USER": "impact_user",
+        "PASSWORD": "x48o2y3YcPuNy8Z5xyFgfYnlimWvyIVj",
+        "HOST": "dpg-ci7tl8p8g3n3vm2ego2g-a",
         "PORT": "5432",
     }
 }
