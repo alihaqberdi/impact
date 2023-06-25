@@ -38,7 +38,7 @@ class DetailRoom(APIView):
             return Response(objson.data)
         except:
             return Response({
-                "error": "Xona Topilmadi"
+                "error": "topilmadi"
             }, status.HTTP_404_NOT_FOUND)
 
 
@@ -68,7 +68,7 @@ class BookView(APIView):
             )
             return Response({
                 "message": "xona muvaffaqiyatli band qilindi"
-            })
+            }, status=status.HTTP_201_CREATED)
 
 
 
@@ -77,5 +77,7 @@ class RoomAvailability(APIView):
         room_obj = get_object_or_404(Room, pk=room_id)
         data_or_defaul = (request.GET.get('date'))
         ans = get_book_object(room_obj, data_or_defaul)
+        if type(ans) != list:
+            return Response([ans])
         return Response(ans)
 

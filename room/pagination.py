@@ -13,6 +13,6 @@ class CustomPagination(PageNumberPagination):
                 'page': self.page.number,
                 'count': Room.objects.count(),
                 'page_size': self.page_size,
-                'result': data
+                'results': data
             }
         )

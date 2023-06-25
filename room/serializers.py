@@ -18,8 +18,8 @@ class ResidentSerializer(serializers.Serializer):
 
 class BookingSerializer(serializers.Serializer):
     resident = ResidentSerializer()
-    start = serializers.DateTimeField(input_formats=['%Y-%m-%d %H:%M:%S'])
-    end = serializers.DateTimeField(input_formats=['%Y-%m-%d %H:%M:%S'])
+    start = serializers.DateTimeField(input_formats=['%d-%m-%Y %H:%M:%S'])
+    end = serializers.DateTimeField(input_formats=['%d-%m-%Y %H:%M:%S'])
 
     def validate(self, attrs):
 
@@ -43,7 +43,7 @@ class BookingSerializer(serializers.Serializer):
 
 
 class DateTimeSerializer(serializers.Serializer):
-    date = serializers.DateField(format='%Y-%m-%d', input_formats=['%Y-%m-%d'])
+    date = serializers.DateField(format='%d-%m-%Y', input_formats=['%d-%m-%Y'])
 
     def validate(self, attrs):
         value = attrs['date']

@@ -116,6 +116,10 @@ LANGUAGE_CODE = 'uz'
 
 TIME_ZONE = 'UTC'
 
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
+DATE_FORMAT = 'd/m/Y'
+
+
 USE_I18N = True
 
 USE_TZ = True
