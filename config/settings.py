@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-sv95pr!_fa2^1xl+xh5ixudn8k@vc@6hwzv!c@qe6ie@i8umk&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "impact",
+        "NAME": "impact1",
         "USER": "postgres",
         "PASSWORD": "lopsed2211tyg",
         "HOST": "localhost",
@@ -114,6 +114,10 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'uz'
 
 TIME_ZONE = 'UTC'
+
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
+DATE_FORMAT = 'd/m/Y'
+
 
 USE_I18N = True
 
