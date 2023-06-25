@@ -71,6 +71,7 @@ class BookView(APIView):
             }, status=status.HTTP_201_CREATED)
 
 
+
 class RoomAvailability(APIView):
     def get(self, request, room_id):
         room_obj = get_object_or_404(Room, pk=room_id)
@@ -79,3 +80,4 @@ class RoomAvailability(APIView):
         if type(ans) != list:
             return Response([ans])
         return Response(ans)
+
