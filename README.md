@@ -1,9 +1,6 @@
 # Yozda Birga Kod Yozamiz:  Impact Loyihasi
 Loyiha Django Rest Framework va Postgresql Malumotlar obmoridan foydalanilgan.
 
-# api link
-## https://impact-deap.onrender.com/api/rooms/
-
 # Eslatma
  - Vaqt formati quyidagicha: ``2023-06-22 11:30:11`` booking qilishda ham shu   formatdan foydalanilgan
  - loyihani soat kechgi ``20:00 dan kechgi 00:01 gacha test qilinsa xatoliklar kelib chiqish ehtimoli bor.`` Sabab test funksiyalar real vaqtda ishlaydi.funksiyalarda 4 soatgacha vaqt qo'shib booking qilib test qilingan.
